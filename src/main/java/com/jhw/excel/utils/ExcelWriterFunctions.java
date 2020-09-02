@@ -162,6 +162,11 @@ public class ExcelWriterFunctions {
             return this;
         }
 
+        public builder setColumns(Supplier<String[]> columns) {
+            columnsNames = columns;
+            return this;
+        }
+
         public builder folder(File folder) {
             this.folder = folder;
             return this;
