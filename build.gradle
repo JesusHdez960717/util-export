@@ -1,0 +1,31 @@
+plugins {
+    id 'java'
+}
+
+group = 'com.jhw.excel'
+
+//mainClassName = 'com.jhw.mysql.Main'
+
+repositories {
+    jcenter()
+    mavenCentral()
+}
+
+
+dependencies {
+    testCompile 'junit:junit:4.13'
+    
+    implementation project(':utils')
+    implementation project(':clean-core')
+    implementation project(':clean-swing')
+    
+    implementation project(':derivable-icons')
+    implementation project(':material-standards')
+    implementation project(':material-personalization')
+    
+    implementation project(':material-swing')
+    implementation project(':material-notification')
+
+    compile group: 'com.google.inject', name: 'guice', version: '4.2.3'
+    compile group: 'javax.inject', name: 'javax.inject', version: '1'
+}
