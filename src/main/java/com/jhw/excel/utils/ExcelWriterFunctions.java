@@ -13,6 +13,10 @@ import java.util.function.*;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import com.jhw.utils.others.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Calendar;
+import java.util.Date;
 
 /**
  *
@@ -21,6 +25,20 @@ import com.jhw.utils.others.*;
 public class ExcelWriterFunctions {
 
     public static final String XLSX = "xlsx";
+
+    public static final Function<Workbook, CellStyle> DEFAULT_VALUES_CELL_STYLE = (Workbook workbook) -> {
+        Font headerFont = workbook.createFont();
+        headerFont.setFontHeightInPoints((short) 11);
+        headerFont.setColor(IndexedColors.BLACK.getIndex());
+
+        CellStyle cellStyle = workbook.createCellStyle();
+        cellStyle.setFont(headerFont);
+        cellStyle.setBorderBottom(BorderStyle.THIN);
+        cellStyle.setBorderLeft(BorderStyle.THIN);
+        cellStyle.setBorderRight(BorderStyle.THIN);
+
+        return cellStyle;
+    };
 
     public static void write(builder b) throws Exception {
         final Workbook workbook = b.workbook;     // new HSSFWorkbook() for generating `.xls` folder
@@ -42,8 +60,12 @@ public class ExcelWriterFunctions {
             cell.setCellStyle(headerCellStyle);
         }
 
-        // Create a CellStyle with the font for values
-        CellStyle valuesCellStyle = b.valuesCellStyle.apply(workbook);
+        // Create a CellStyles for values
+        CellStyle valuesCellStyle[] = new CellStyle[columns.length];
+        for (int i = 0; i < columns.length; i++) {
+            //coge un style default y le agrega las cosas nuevas
+            valuesCellStyle[i] = b.valuesCellStyle[i].apply(workbook);
+        }
 
         // Create Other rows and cells with values
         int rowNum = 1;
@@ -52,9 +74,10 @@ public class ExcelWriterFunctions {
             Row row = sheet.createRow(rowNum++);
 
             for (int i = 0; i < value.length; i++) {
+                //este es el original, el de abajo es para probar el date
                 Cell cell = row.createCell(i);//create cell
-                cell.setCellValue(value[i].toString());//set the value
-                cell.setCellStyle(valuesCellStyle);//format the cell
+                cell.setCellStyle(valuesCellStyle[i]);//format the cell
+                setCellValue(cell, value[i]);
             }
         }
 
@@ -65,15 +88,46 @@ public class ExcelWriterFunctions {
 
         // Write the output to a folder
         b.folder.mkdirs();
-        try (FileOutputStream fileOut = new FileOutputStream(finalFile(b.folder, b.fileName))) {
+        try (FileOutputStream fileOut = new FileOutputStream(finalFile(b.folder, b.fileName, XLSX))) {
             workbook.write(fileOut);
         }
 
         workbook.close();
     }
 
-    public static File finalFile(File parent, String file) {
-        return new File(parent, file + "." + XLSX);
+    /**
+     * Trabajo del indio xq la interfaz no tiene un set object, por lo que hay
+     * que parsear todos los valores a mano
+     *
+     * @param cell
+     * @param value
+     */
+    public static void setCellValue(Cell cell, Object value) {
+        if (value == null) {
+            cell.setCellValue("");
+            return;
+        }
+        if (value instanceof Calendar) {
+            cell.setCellValue((Calendar) value);
+        } else if (value instanceof Date) {
+            cell.setCellValue((Date) value);
+        } else if (value instanceof LocalDate) {
+            cell.setCellValue((LocalDate) value);
+        } else if (value instanceof LocalDateTime) {
+            cell.setCellValue((LocalDateTime) value);
+        } else if (value instanceof RichTextString) {
+            cell.setCellValue((RichTextString) value);
+        } else if (value instanceof Double) {
+            cell.setCellValue((Double) value);
+        } else if (value instanceof Boolean) {
+            cell.setCellValue((Double) value);
+        } else {
+            cell.setCellValue(value.toString());
+        }
+    }
+
+    public static File finalFile(File parent, String file, String extencion) {
+        return new File(parent, file + "." + extencion);
     }
 
     public static builder builder() {
@@ -96,22 +150,12 @@ public class ExcelWriterFunctions {
             cellStyle.setBorderLeft(BorderStyle.THICK);
             cellStyle.setBorderRight(BorderStyle.THICK);
             cellStyle.setBorderTop(BorderStyle.THICK);
+            cellStyle.setAlignment(HorizontalAlignment.CENTER);
 
             return cellStyle;
         };
-        private Function<Workbook, CellStyle> valuesCellStyle = (Workbook workbook) -> {
-            Font headerFont = workbook.createFont();
-            headerFont.setFontHeightInPoints((short) 11);
-            headerFont.setColor(IndexedColors.BLACK.getIndex());
 
-            CellStyle cellStyle = workbook.createCellStyle();
-            cellStyle.setFont(headerFont);
-            cellStyle.setBorderBottom(BorderStyle.THIN);
-            cellStyle.setBorderLeft(BorderStyle.THIN);
-            cellStyle.setBorderRight(BorderStyle.THIN);
-
-            return cellStyle;
-        };
+        private Function<Workbook, CellStyle>[] valuesCellStyle = null;
         private Supplier<String[]> columnsNames = () -> new String[]{};
         private Supplier<List<Object[]>> values = () -> new ArrayList<>();
 
@@ -140,31 +184,35 @@ public class ExcelWriterFunctions {
             return this;
         }
 
-        public builder valuesCellStyle(CellStyle cellStyle) {
-            this.valuesCellStyle = (Workbook workbook1) -> {
-                return cellStyle;
-            };
-            return this;
-        }
-
-        public builder valuesCellStyle(Function<Workbook, CellStyle> cellStyle) {
-            this.valuesCellStyle = cellStyle;
-            return this;
-        }
-
         public builder setColumns(String[] columns) {
             columnsNames = () -> columns;
+            setUpValuesEditor();
             return this;
         }
 
         public builder setColumns(List<String> columns) {
             columnsNames = () -> columns.toArray(new String[]{});
+            setUpValuesEditor();
             return this;
         }
 
         public builder setColumns(Supplier<String[]> columns) {
             columnsNames = columns;
+            setUpValuesEditor();
             return this;
+        }
+
+        public builder updateColumnStyle(int idCol, BiFunction<Workbook, CellStyle, CellStyle> predicate) {
+            valuesCellStyle[idCol] = (Workbook t) -> predicate.apply(t, DEFAULT_VALUES_CELL_STYLE.apply(t));
+            return this;
+        }
+
+        private void setUpValuesEditor() {
+            String[] get = columnsNames.get();
+            valuesCellStyle = new Function[get.length];
+            for (int i = 0; i < get.length; i++) {
+                valuesCellStyle[i] = DEFAULT_VALUES_CELL_STYLE;
+            }
         }
 
         public builder folder(File folder) {
@@ -194,7 +242,7 @@ public class ExcelWriterFunctions {
 
         public Opener write() throws Exception {
             ExcelWriterFunctions.write(this);
-            return new Opener(finalFile(folder, fileName));
+            return new Opener(finalFile(folder, fileName, XLSX));
         }
 
     }
