@@ -5,7 +5,6 @@
  */
 package com.jhw.excel.utils;
 
-import java.awt.Desktop;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
@@ -13,6 +12,7 @@ import java.util.List;
 import java.util.function.*;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import com.jhw.utils.others.*;
 
 /**
  *
@@ -29,7 +29,7 @@ public class ExcelWriterFunctions {
         Sheet sheet = workbook.createSheet(b.sheetName);
 
         // Create a CellStyle with the font for headers
-        CellStyle headerCellStyle = b.headerCellStyle.apply(workbook);
+        CellStyle headerCellStyle = b.columnCellStyle.apply(workbook);
 
         // Create a Row for columns
         Row headerRow = sheet.createRow(0);
@@ -65,9 +65,9 @@ public class ExcelWriterFunctions {
 
         // Write the output to a folder
         b.folder.mkdirs();
-        FileOutputStream fileOut = new FileOutputStream(finalFile(b.folder, b.fileName));
-        workbook.write(fileOut);
-        fileOut.close();
+        try (FileOutputStream fileOut = new FileOutputStream(finalFile(b.folder, b.fileName))) {
+            workbook.write(fileOut);
+        }
 
         workbook.close();
     }
@@ -84,7 +84,7 @@ public class ExcelWriterFunctions {
 
         private String sheetName = "Hoja 1";
         private Workbook workbook = new XSSFWorkbook();
-        private Function<Workbook, CellStyle> headerCellStyle = (Workbook workbook) -> {
+        private Function<Workbook, CellStyle> columnCellStyle = (Workbook workbook) -> {
             Font headerFont = workbook.createFont();
             headerFont.setBold(true);
             headerFont.setFontHeightInPoints((short) 14);
@@ -128,15 +128,15 @@ public class ExcelWriterFunctions {
             return this;
         }
 
-        public builder headerCellStyle(CellStyle cellStyle) {
-            this.headerCellStyle = (Workbook workbook1) -> {
+        public builder columnCellStyle(CellStyle cellStyle) {
+            this.columnCellStyle = (Workbook workbook1) -> {
                 return cellStyle;
             };
             return this;
         }
 
-        public builder headerCellStyle(Function<Workbook, CellStyle> cellStyle) {
-            this.headerCellStyle = cellStyle;
+        public builder columnCellStyle(Function<Workbook, CellStyle> cellStyle) {
+            this.columnCellStyle = cellStyle;
             return this;
         }
 
@@ -192,22 +192,10 @@ public class ExcelWriterFunctions {
             return this;
         }
 
-        public Openable write() throws Exception {
+        public Opener write() throws Exception {
             ExcelWriterFunctions.write(this);
-            return new Openable(finalFile(folder, fileName));
+            return new Opener(finalFile(folder, fileName));
         }
 
-        public static class Openable {
-
-            private final File file;
-
-            public Openable(File file) {
-                this.file = file;
-            }
-
-            public void open() throws Exception {
-                Desktop.getDesktop().open(file);
-            }
-        }
     }
 }
