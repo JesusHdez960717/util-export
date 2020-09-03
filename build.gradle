@@ -4,7 +4,7 @@ plugins {
 
 group = 'com.jhw.excel'
 
-//mainClassName = 'com.jhw.mysql.Main'
+//mainClassName = 'com.jhw.excel.Main'
 
 repositories {
     jcenter()
@@ -19,13 +19,14 @@ dependencies {
     implementation project(':clean-core')
     implementation project(':clean-swing')
     
-    implementation project(':derivable-icons')
+    /*implementation project(':derivable-icons')
     implementation project(':material-standards')
     implementation project(':material-personalization')
     
     implementation project(':material-swing')
-    implementation project(':material-notification')
+    implementation project(':material-notification')*/
 
-    compile group: 'com.google.inject', name: 'guice', version: '4.2.3'
-    compile group: 'javax.inject', name: 'javax.inject', version: '1'
+    compile group: 'org.apache.poi', name: 'poi', version: '4.1.2'
+    compile group: 'org.apache.poi', name: 'poi-ooxml', version: '4.1.2'
+
 }
