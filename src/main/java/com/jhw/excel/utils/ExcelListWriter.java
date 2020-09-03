@@ -22,7 +22,7 @@ import java.util.Date;
  *
  * @author Jesus Hernandez Barrios (jhernandezb96@gmail.com)
  */
-public class ExcelWriterFunctions {
+public class ExcelListWriter {
 
     public static final String XLSX = "xlsx";
 
@@ -47,7 +47,7 @@ public class ExcelWriterFunctions {
         Sheet sheet = workbook.createSheet(b.sheetName);
 
         // Create a CellStyle with the font for headers
-        CellStyle headerCellStyle = b.columnCellStyle.apply(workbook);
+        CellStyle headerCellStyle = b.headerCellStyle.apply(workbook);
 
         // Create a Row for columns
         Row headerRow = sheet.createRow(0);
@@ -64,7 +64,7 @@ public class ExcelWriterFunctions {
         CellStyle valuesCellStyle[] = new CellStyle[columns.length];
         for (int i = 0; i < columns.length; i++) {
             //coge un style default y le agrega las cosas nuevas
-            valuesCellStyle[i] = b.valuesCellStyle[i].apply(workbook);
+            valuesCellStyle[i] = b.valuesColumnCellStyle[i].apply(workbook);
         }
 
         // Create Other rows and cells with values
@@ -138,7 +138,7 @@ public class ExcelWriterFunctions {
 
         private String sheetName = "Hoja 1";
         private Workbook workbook = new XSSFWorkbook();
-        private Function<Workbook, CellStyle> columnCellStyle = (Workbook workbook) -> {
+        private Function<Workbook, CellStyle> headerCellStyle = (Workbook workbook) -> {
             Font headerFont = workbook.createFont();
             headerFont.setBold(true);
             headerFont.setFontHeightInPoints((short) 14);
@@ -155,7 +155,7 @@ public class ExcelWriterFunctions {
             return cellStyle;
         };
 
-        private Function<Workbook, CellStyle>[] valuesCellStyle = null;
+        private Function<Workbook, CellStyle>[] valuesColumnCellStyle = null;
         private Supplier<String[]> columnsNames = () -> new String[]{};
         private Supplier<List<Object[]>> values = () -> new ArrayList<>();
 
@@ -172,15 +172,15 @@ public class ExcelWriterFunctions {
             return this;
         }
 
-        public builder columnCellStyle(CellStyle cellStyle) {
-            this.columnCellStyle = (Workbook workbook1) -> {
+        public builder headerCellStyle(CellStyle cellStyle) {
+            this.headerCellStyle = (Workbook workbook1) -> {
                 return cellStyle;
             };
             return this;
         }
 
-        public builder columnCellStyle(Function<Workbook, CellStyle> cellStyle) {
-            this.columnCellStyle = cellStyle;
+        public builder headerCellStyle(Function<Workbook, CellStyle> cellStyle) {
+            this.headerCellStyle = cellStyle;
             return this;
         }
 
@@ -202,16 +202,33 @@ public class ExcelWriterFunctions {
             return this;
         }
 
-        public builder updateColumnStyle(int idCol, BiFunction<Workbook, CellStyle, CellStyle> predicate) {
-            valuesCellStyle[idCol] = (Workbook t) -> predicate.apply(t, DEFAULT_VALUES_CELL_STYLE.apply(t));
+        /**
+         * < pre>
+         * ExcelWriterFunctions.builder().sheetName("123")
+         * .setColumns(new String[]{"nombre", "ci", "nacimiento"})
+         * .updateColumnStyle(1, (Workbook workbook, CellStyle defaultStyle) → {
+         * defaultStyle.setDataFormat(workbook.createDataFormat().getFormat("#,##0.0000"));
+         * return defaultStyle;
+         * })
+         * .values(EmpleadoDomain.randomArrayList()).write().open();</pre>
+         *
+         * @param idCol
+         * @param predicate
+         * @return
+         */
+        public builder updateValuesColumnCellStyle(int idCol, BiFunction<Workbook, CellStyle, CellStyle> predicate) {
+            valuesColumnCellStyle[idCol] = (Workbook t) -> predicate.apply(t, DEFAULT_VALUES_CELL_STYLE.apply(t));
             return this;
         }
 
+        /**
+         * Start the valuesColumnCellStyle by default
+         */
         private void setUpValuesEditor() {
             String[] get = columnsNames.get();
-            valuesCellStyle = new Function[get.length];
+            valuesColumnCellStyle = new Function[get.length];
             for (int i = 0; i < get.length; i++) {
-                valuesCellStyle[i] = DEFAULT_VALUES_CELL_STYLE;
+                valuesColumnCellStyle[i] = DEFAULT_VALUES_CELL_STYLE;
             }
         }
 
@@ -241,7 +258,7 @@ public class ExcelWriterFunctions {
         }
 
         public Opener write() throws Exception {
-            ExcelWriterFunctions.write(this);
+            ExcelListWriter.write(this);
             return new Opener(finalFile(folder, fileName, XLSX));
         }
 
