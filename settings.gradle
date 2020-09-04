@@ -14,3 +14,6 @@ project(':material-swing').projectDir = "E:\\Trabajos\\Projects\\GIT Projects Gr
 project(':material-notification').projectDir = "E:\\Trabajos\\Projects\\GIT Projects Gradle\\Material\\Notifications" as File
 
 
+include 'module-files'
+project(':module-files').projectDir = "E:\\Trabajos\\Projects\\GIT Projects Gradle\\Modulos Utils\\Files" as File
+
