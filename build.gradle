@@ -18,6 +18,7 @@ dependencies {
     implementation project(':utils')
     implementation project(':clean-core')
     implementation project(':clean-swing')
+    implementation project(':module-files')
     
     /*implementation project(':derivable-icons')
     implementation project(':material-standards')

@@ -1,4 +1,4 @@
-rootProject.name = 'Excel'
+rootProject.name = 'Export'
 
 include ':utils',':clean-core', ':clean-swing',':derivable-icons', ':material-standards', ':material-personalization', 'material-swing', 'material-notification'
 
@@ -13,4 +13,7 @@ project(':material-personalization').projectDir = "E:\\Trabajos\\Projects\\GIT P
 project(':material-swing').projectDir = "E:\\Trabajos\\Projects\\GIT Projects Gradle\\MaterialSwing" as File
 project(':material-notification').projectDir = "E:\\Trabajos\\Projects\\GIT Projects Gradle\\Material\\Notifications" as File
 
+
+include 'module-files'
+project(':module-files').projectDir = "E:\\Trabajos\\Projects\\GIT Projects Gradle\\Modulos Utils\\Files" as File
 
