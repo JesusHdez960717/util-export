@@ -13,7 +13,9 @@ import java.util.function.*;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import com.jhw.files.utils.Opener;
+import com.jhw.files.utils.PersonalizationFiles;
 import static com.jhw.utils.others.SDF.SDF_ALL;
+import com.jhw.utils.services.ConverterService;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Calendar;
@@ -274,16 +276,27 @@ public class ExcelListWriter {
             return this;
         }
 
+        public builder config(ExportableConfigExcel config) {
+            this.folder(config.getFolder())
+                    .fileName(config.getFileName())
+                    .setColumns(config::getColumnNamesExport)
+                    .values(ConverterService.convert(config.getValuesList(), config::getRowObjectExport));
+
+            //personaliza con las cosas que quiera
+            config.personalizeBuilder(this);
+            return this;
+        }
+
         public Opener write() throws Exception {
             //crate Opener with actual date
             Opener op = Opener.from(finalFile(folder, fileName, XLSX));
-            
+
             //set up the final file to export
             finalFile = op.getFile();
-            
+
             //export
             ExcelListWriter.write(this);
-            
+
             //return opener in case of needed
             return op;
         }
