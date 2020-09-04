@@ -1,4 +1,4 @@
-rootProject.name = 'Excel'
+rootProject.name = 'Export'
 
 include ':utils',':clean-core', ':clean-swing',':derivable-icons', ':material-standards', ':material-personalization', 'material-swing', 'material-notification'
 
