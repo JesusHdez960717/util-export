@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.function.*;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import com.jhw.utils.others.*;
+import com.jhw.files.utils.Opener;
 import static com.jhw.utils.others.SDF.SDF_ALL;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -104,7 +104,7 @@ public class ExcelListWriter {
 
         // Write the output to a folder
         b.folder.mkdirs();
-        try (FileOutputStream fileOut = new FileOutputStream(finalFile(b.folder, b.fileName, XLSX))) {
+        try (FileOutputStream fileOut = new FileOutputStream(b.finalFile)) {
             workbook.write(fileOut);
         }
 
@@ -177,6 +177,8 @@ public class ExcelListWriter {
 
         private File folder = new File("temp");
         private String fileName = String.valueOf(System.currentTimeMillis());
+
+        private File finalFile;
 
         public builder sheetName(String sheetName) {
             this.sheetName = sheetName;
@@ -273,8 +275,17 @@ public class ExcelListWriter {
         }
 
         public Opener write() throws Exception {
+            //crate Opener with actual date
+            Opener op = Opener.from(finalFile(folder, fileName, XLSX));
+            
+            //set up the final file to export
+            finalFile = op.getFile();
+            
+            //export
             ExcelListWriter.write(this);
-            return new Opener(finalFile(folder, fileName, XLSX));
+            
+            //return opener in case of needed
+            return op;
         }
 
     }
