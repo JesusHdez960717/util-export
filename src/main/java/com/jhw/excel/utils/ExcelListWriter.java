@@ -13,10 +13,12 @@ import java.util.function.*;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import com.jhw.utils.others.*;
+import static com.jhw.utils.others.SDF.SDF_ALL;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Calendar;
 import java.util.Date;
+import org.apache.poi.ss.util.CellRangeAddress;
 
 /**
  *
@@ -25,37 +27,52 @@ import java.util.Date;
 public class ExcelListWriter {
 
     public static final String XLSX = "xlsx";
+    public static final String DEFAULT_FONT_NAME = "Arial";
 
     public static final Function<Workbook, CellStyle> DEFAULT_VALUES_CELL_STYLE = (Workbook workbook) -> {
-        Font headerFont = workbook.createFont();
-        headerFont.setFontHeightInPoints((short) 11);
-        headerFont.setColor(IndexedColors.BLACK.getIndex());
+        Font font = workbook.createFont();
+        font.setFontHeightInPoints((short) 12);
+        font.setFontName(DEFAULT_FONT_NAME);
+        font.setColor(IndexedColors.BLACK.getIndex());
 
         CellStyle cellStyle = workbook.createCellStyle();
-        cellStyle.setFont(headerFont);
+        cellStyle.setFont(font);
         cellStyle.setBorderBottom(BorderStyle.THIN);
-        cellStyle.setBorderLeft(BorderStyle.THIN);
-        cellStyle.setBorderRight(BorderStyle.THIN);
+        cellStyle.setBorderLeft(BorderStyle.MEDIUM);
+        cellStyle.setBorderRight(BorderStyle.MEDIUM);
+        cellStyle.setAlignment(HorizontalAlignment.LEFT);
 
         return cellStyle;
     };
 
     public static void write(builder b) throws Exception {
+        //get the workbook
         final Workbook workbook = b.workbook;     // new HSSFWorkbook() for generating `.xls` folder
 
-        // Create a Sheet
+        // Create a Sheet at position 0
         Sheet sheet = workbook.createSheet(b.sheetName);
 
-        // Create a CellStyle with the font for headers
+        // Create a CellStyle with the font for columns headers
         CellStyle headerCellStyle = b.headerCellStyle.apply(workbook);
 
-        // Create a Row for columns
-        Row headerRow = sheet.createRow(0);
+        // Create a RowNum for counting rows
+        int rowNum = 0;
+
+        //retrieve the columns
+        String[] columns = b.columnsNames.get();
+
+        //create the header
+        Row titleHeaderRow = sheet.createRow(rowNum++);
+        sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, columns.length - 1));
+        Cell cellTitle = titleHeaderRow.createCell(0);
+        cellTitle.setCellValue(b.fileName);
+        cellTitle.setCellStyle(headerCellStyle);
+
+        Row columnsHeaderRow = sheet.createRow(rowNum++);
 
         // Creating cells of columns
-        String[] columns = b.columnsNames.get();
         for (int i = 0; i < columns.length; i++) {
-            Cell cell = headerRow.createCell(i);
+            Cell cell = columnsHeaderRow.createCell(i);
             cell.setCellValue(columns[i]);
             cell.setCellStyle(headerCellStyle);
         }
@@ -68,7 +85,6 @@ public class ExcelListWriter {
         }
 
         // Create Other rows and cells with values
-        int rowNum = 1;
         List<Object[]> values = b.values.get();
         for (Object[] value : values) {
             Row row = sheet.createRow(rowNum++);
@@ -127,7 +143,7 @@ public class ExcelListWriter {
     }
 
     public static File finalFile(File parent, String file, String extencion) {
-        return new File(parent, file + "." + extencion);
+        return new File(parent, file + " " + SDF_ALL.format(new Date()) + "." + extencion);
     }
 
     public static builder builder() {
@@ -142,14 +158,14 @@ public class ExcelListWriter {
             Font headerFont = workbook.createFont();
             headerFont.setBold(true);
             headerFont.setFontHeightInPoints((short) 14);
-            headerFont.setColor(IndexedColors.BLACK.getIndex());
+            headerFont.setFontName(XLSX);
 
             CellStyle cellStyle = workbook.createCellStyle();
             cellStyle.setFont(headerFont);
-            cellStyle.setBorderBottom(BorderStyle.THICK);
-            cellStyle.setBorderLeft(BorderStyle.THICK);
-            cellStyle.setBorderRight(BorderStyle.THICK);
-            cellStyle.setBorderTop(BorderStyle.THICK);
+            cellStyle.setBorderBottom(BorderStyle.MEDIUM);
+            cellStyle.setBorderLeft(BorderStyle.MEDIUM);
+            cellStyle.setBorderRight(BorderStyle.MEDIUM);
+            cellStyle.setBorderTop(BorderStyle.MEDIUM);
             cellStyle.setAlignment(HorizontalAlignment.CENTER);
 
             return cellStyle;
@@ -204,12 +220,11 @@ public class ExcelListWriter {
 
         /**
          * < pre>
-         * ExcelWriterFunctions.builder().sheetName("123")
-         * .setColumns(new String[]{"nombre", "ci", "nacimiento"})
-         * .updateColumnStyle(1, (Workbook workbook, CellStyle defaultStyle) → {
+         * ExcelWriterFunctions.builder().sheetName("123") .setColumns(new
+         * String[]{"nombre", "ci", "nacimiento"}) .updateColumnStyle(1,
+         * (Workbook workbook, CellStyle defaultStyle) → {
          * defaultStyle.setDataFormat(workbook.createDataFormat().getFormat("#,##0.0000"));
-         * return defaultStyle;
-         * })
+         * return defaultStyle; })
          * .values(EmpleadoDomain.randomArrayList()).write().open();</pre>
          *
          * @param idCol
