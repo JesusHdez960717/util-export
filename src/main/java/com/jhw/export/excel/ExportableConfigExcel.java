@@ -3,7 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.jhw.excel.utils;
+package com.jhw.export.excel;
+
+import com.jhw.export.excel.ExcelListWriter;
+import com.jhw.export.utils.ExportableConfig;
 
 /**
  *
