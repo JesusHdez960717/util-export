@@ -3,15 +3,17 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.jhw.excel.utils;
+package com.jhw.export.pdf;
+
+import com.jhw.export.utils.ExportableConfig;
 
 /**
  *
  * @author Jesus Hernandez Barrios (jhernandezb96@gmail.com)
  */
-public interface ExportableConfigExcel<T> extends ExportableConfig<T> {
+public interface ExportableConfigPDF<T> extends ExportableConfig<T> {
 
-    public ExcelListWriter.builder exportExcelBuilder();
+    public PDFListWriter.builder exportExcelBuilder();
 
-    public void personalizeBuilder(ExcelListWriter.builder builder);
+    public void personalizeBuilder(PDFListWriter.builder builder);
 }
