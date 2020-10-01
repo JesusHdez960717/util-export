@@ -15,18 +15,11 @@ repositories {
 dependencies {
     testCompile 'junit:junit:4.13'
     
-    implementation project(':utils')
-    implementation project(':clean-core')
+    implementation project(':utils-core')
+    implementation project(':clean-core-full')
     implementation project(':clean-swing')
-    implementation project(':module-files')
+    implementation project(':utils-files')
     
-    /*implementation project(':derivable-icons')
-    implementation project(':material-standards')
-    implementation project(':material-personalization')
-    
-    implementation project(':material-swing')
-    implementation project(':material-notification')*/
-
     //excel
     compile group: 'org.apache.poi', name: 'poi', version: '4.1.2'
     compile group: 'org.apache.poi', name: 'poi-ooxml', version: '4.1.2'
