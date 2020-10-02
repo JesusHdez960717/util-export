@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.jhw.export.pdf;
+package com.jhw.utils.export.pdf;
 
-import com.jhw.export.utils.ExportableConfig;
+import com.jhw.utils.export.utils.ExportableConfig;
 
 /**
  *

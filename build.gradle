@@ -2,9 +2,7 @@ plugins {
     id 'java'
 }
 
-group = 'com.jhw.excel'
-
-//mainClassName = 'com.jhw.excel.Main'
+group = 'com.jhw.utils'
 
 repositories {
     jcenter()
