@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.jhw.utils.export.excel;
+package com.jhw.utils.export.json;
 
 import com.jhw.utils.export.utils.ExportableConfig;
 
@@ -11,9 +11,7 @@ import com.jhw.utils.export.utils.ExportableConfig;
  *
  * @author Jesus Hernandez Barrios (jhernandezb96@gmail.com)
  */
-public interface ExportableConfigExcel<T> extends ExportableConfig<T> {
+public interface ExportableConfigJSON<T> extends ExportableConfig<T> {
 
-    public ExcelListWriter.builder exportExcelBuilder();
-
-    public void personalizeBuilder(ExcelListWriter.builder builder);
+    public JSONListWriter.builder exportJSONBuilder();
 }

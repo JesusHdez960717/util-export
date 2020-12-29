@@ -153,7 +153,7 @@ public class ExcelListWriter {
     }
 
     public static class builder {
-
+        
         private String sheetName = "Hoja 1";
         private Workbook workbook = new XSSFWorkbook();
         private Function<Workbook, CellStyle> headerCellStyle = (Workbook workbook) -> {
