@@ -16,7 +16,7 @@ dependencies {
     testCompile 'junit:junit:4.13'
     
     implementation project(':utils-core')
-    implementation project(':clean-core-full')
+    implementation project(':clean-core')
     implementation project(':clean-swing')
     implementation project(':utils-files')
     

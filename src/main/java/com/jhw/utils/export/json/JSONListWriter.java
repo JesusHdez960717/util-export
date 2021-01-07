@@ -6,18 +6,14 @@
 package com.jhw.utils.export.json;
 
 import com.jhw.utils.file.Opener;
-import com.jhw.utils.jackson.JACKSON;
-import static com.jhw.utils.others.SDF.SDF_ALL;
-import com.jhw.utils.services.ConverterService;
+import com.root101.json.jackson.JACKSON;
+import com.root101.utils.services.ConverterService;
 import java.io.File;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.BiFunction;
-import java.util.function.Function;
-import java.util.function.Supplier;
 
 /**
  *
@@ -36,7 +32,7 @@ public class JSONListWriter {
     }
 
     public static File finalFile(File parent, String file, String extencion) {
-        return new File(parent, file + " " + SDF_ALL.format(new Date()) + "." + extencion);
+        return new File(parent, file + " " + DateTimeFormatter.ISO_LOCAL_DATE_TIME.format(LocalDateTime.now()) + "." + extencion);
     }
 
     public static class builder {
