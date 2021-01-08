@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.jhw.utils.export.test;
+package com.root101.utils.export.test;
 
 import com.root101.clean.core.domain.DomainObject;
 import java.security.SecureRandom;

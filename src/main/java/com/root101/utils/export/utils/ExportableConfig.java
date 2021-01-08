@@ -3,18 +3,25 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.jhw.utils.export.utils;
+package com.root101.utils.export.utils;
 
-import com.root101.clean.core.domain.DomainObject;
 import java.io.File;
 import java.util.List;
 
 /**
  *
  * @author Jesus Hernandez Barrios (jhernandezb96@gmail.com)
- * @param <Domain>
  */
-public interface DomainListFileReader<Domain extends DomainObject> {
+public interface ExportableConfig<T> {
 
-    public List<Domain> read(List<File> files) throws Exception;
+    public List<T> getValuesList();
+
+    public Object[] getRowObjectExport(T object);
+
+    public String[] getColumnNamesExport();
+
+    public File getFolder();
+
+    public String getFileName();
+    
 }

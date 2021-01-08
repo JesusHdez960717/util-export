@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.jhw.utils.export.excel;
+package com.root101.utils.export.excel;
 
-import com.jhw.utils.export.utils.ExportableConfig;
+import com.root101.utils.export.utils.ExportableConfig;
 
 /**
  *

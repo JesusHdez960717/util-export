@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.jhw.utils.export.json;
+package com.root101.utils.export.json;
 
 import com.jhw.utils.file.Opener;
 import com.root101.json.jackson.JACKSON;
