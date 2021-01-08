@@ -1,9 +1,20 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright 2021 Root101 (jhernandezb96@gmail.com, +53-5-426-8660).
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Or read it directly from LICENCE.txt file at the root of this project.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
-package com.jhw.utils.export.excel;
+package com.root101.export.excel;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -13,18 +24,18 @@ import java.util.function.*;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import com.jhw.utils.file.Opener;
-import com.jhw.utils.file.PersonalizationFiles;
-import static com.jhw.utils.others.SDF.SDF_ALL;
-import com.jhw.utils.services.ConverterService;
+import com.root101.utils.services.ConverterService;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
 import org.apache.poi.ss.util.CellRangeAddress;
 
 /**
  *
- * @author Jesus Hernandez Barrios (jhernandezb96@gmail.com)
+ * @author Root101 (jhernandezb96@gmail.com, +53-5-426-8660)
+ * @author JesusHdezWaterloo@Github
  */
 public class ExcelListWriter {
 
@@ -145,7 +156,7 @@ public class ExcelListWriter {
     }
 
     public static File finalFile(File parent, String file, String extencion) {
-        return new File(parent, file + " " + SDF_ALL.format(new Date()) + "." + extencion);
+        return new File(parent, file + " " + DateTimeFormatter.ISO_LOCAL_DATE_TIME.format(LocalDateTime.now()) + "." + extencion);
     }
 
     public static builder builder() {

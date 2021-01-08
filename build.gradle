@@ -2,9 +2,9 @@ plugins {
     id 'java'
 }
 
-group = 'com.jhw.utils'
+group = 'com.root101.export'
 
-version = '1.0.0.SNAPSHOT.20201228'
+version = '1.9.9.SNAPSHOT.20210108'
 
 repositories {
     jcenter()
@@ -16,7 +16,7 @@ dependencies {
     testCompile 'junit:junit:4.13'
     
     implementation project(':utils-core')
-    implementation project(':clean-core-full')
+    implementation project(':clean-core')
     implementation project(':clean-swing')
     implementation project(':utils-files')
     

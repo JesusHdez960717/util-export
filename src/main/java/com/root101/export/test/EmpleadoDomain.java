@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.jhw.utils.export.test;
+package com.root101.export.test;
 
-import com.clean.core.domain.DomainObject;
+import com.root101.clean.core.domain.DomainObject;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Date;
