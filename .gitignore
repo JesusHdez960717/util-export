@@ -26,15 +26,6 @@ hs_err_pid*
 .gradle
 *.DS_Store
 build/
-salvas_bd/
 
 temp/
-
-src/main/java/com/jhw/excel/EmpleadoDomain.java
-
-src/main/java/com/jhw/excel/Main.java
-/src/main/java/com/jhw/export/test/
-
-123.pdf
-
-src/main/java/com/jhw/utils/export/test/Main.java
+/src/main/java/com/root101/export/test/
