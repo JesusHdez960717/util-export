@@ -14,18 +14,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.root101.utils.export.pdf;
+package com.root101.export.utils;
 
-import com.root101.utils.export.utils.ExportableConfig;
+import java.io.File;
+import java.util.List;
 
 /**
  *
  * @author Root101 (jhernandezb96@gmail.com, +53-5-426-8660)
  * @author JesusHdezWaterloo@Github
  */
-public interface ExportableConfigPDF<T> extends ExportableConfig<T> {
+public interface ExportableConfig<T> {
 
-    public PDFListWriter.builder exportExcelBuilder();
+    public List<T> getValuesList();
 
-    public void personalizeBuilder(PDFListWriter.builder builder);
+    public Object[] getRowObjectExport(T object);
+
+    public String[] getColumnNamesExport();
+
+    public File getFolder();
+
+    public String getFileName();
+    
 }

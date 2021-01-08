@@ -14,18 +14,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.root101.utils.export.utils;
+package com.root101.export.json;
 
-import com.root101.clean.core.domain.DomainObject;
-import java.io.File;
-import java.util.List;
+import com.root101.export.utils.ExportableConfig;
 
 /**
  *
  * @author Root101 (jhernandezb96@gmail.com, +53-5-426-8660)
  * @author JesusHdezWaterloo@Github
  */
-public interface DomainListFileReader<Domain extends DomainObject> {
+public interface ExportableConfigJSON<T> extends ExportableConfig<T> {
 
-    public List<Domain> read(List<File> files) throws Exception;
+    public JSONListWriter.builder exportJSONBuilder();
 }

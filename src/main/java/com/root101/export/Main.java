@@ -3,10 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.root101.utils.export;
+package com.root101.export;
 
-import com.root101.utils.export.json.ExportableConfigJSON;
-import com.root101.utils.export.json.JSONListWriter;
+import com.root101.export.json.ExportableConfigJSON;
+import com.root101.export.json.JSONListWriter;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;

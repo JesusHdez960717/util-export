@@ -14,26 +14,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.root101.utils.export.utils;
+package com.root101.export.excel;
 
-import java.io.File;
-import java.util.List;
+import com.root101.export.utils.ExportableConfig;
 
 /**
  *
  * @author Root101 (jhernandezb96@gmail.com, +53-5-426-8660)
  * @author JesusHdezWaterloo@Github
  */
-public interface ExportableConfig<T> {
+public interface ExportableConfigExcel<T> extends ExportableConfig<T> {
 
-    public List<T> getValuesList();
+    public ExcelListWriter.builder exportExcelBuilder();
 
-    public Object[] getRowObjectExport(T object);
-
-    public String[] getColumnNamesExport();
-
-    public File getFolder();
-
-    public String getFileName();
-    
+    public void personalizeBuilder(ExcelListWriter.builder builder);
 }
