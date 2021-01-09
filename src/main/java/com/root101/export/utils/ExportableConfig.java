@@ -35,5 +35,5 @@ public interface ExportableConfig<T> {
     public File getFolder();
 
     public String getFileName();
-    
+
 }
