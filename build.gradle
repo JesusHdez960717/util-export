@@ -4,7 +4,7 @@ plugins {
 
 group = 'com.root101.export'
 
-version = '1.9.9.SNAPSHOT.20210108'
+version = '2.0.0.SNAPSHOT.20210109'
 
 repositories {
     jcenter()
