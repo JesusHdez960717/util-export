@@ -16,6 +16,7 @@
  */
 package com.root101.export.excel;
 
+import com.root101.export.utils.ExportGlobalConfig;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
@@ -24,10 +25,10 @@ import java.util.function.*;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import com.root101.utils.file.Opener;
+import com.root101.utils.interfaces.Formateable;
 import com.root101.utils.services.ConverterService;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
 import org.apache.poi.ss.util.CellRangeAddress;
@@ -119,9 +120,10 @@ public class ExcelListWriter {
         b.folder.mkdirs();
         try (FileOutputStream fileOut = new FileOutputStream(b.finalFile)) {
             workbook.write(fileOut);
+        } finally {
+            workbook.close();
         }
 
-        workbook.close();
     }
 
     /**
@@ -150,13 +152,11 @@ public class ExcelListWriter {
             cell.setCellValue((Double) value);
         } else if (value instanceof Boolean) {
             cell.setCellValue((Double) value);
+        } else if (value instanceof Formateable) {
+            cell.setCellValue(((Formateable) value).format());
         } else {
             cell.setCellValue(value.toString());
         }
-    }
-
-    public static File finalFile(File parent, String file, String extencion) {
-        return new File(parent, file + " " + DateTimeFormatter.ISO_LOCAL_DATE_TIME.format(LocalDateTime.now()) + "." + extencion);
     }
 
     public static builder builder() {
@@ -300,7 +300,7 @@ public class ExcelListWriter {
 
         public Opener write() throws Exception {
             //crate Opener with actual date
-            Opener op = Opener.from(finalFile(folder, fileName, XLSX));
+            Opener op = Opener.from(ExportGlobalConfig.finalFile(folder, fileName, XLSX));
 
             //set up the final file to export
             finalFile = op.getFile();

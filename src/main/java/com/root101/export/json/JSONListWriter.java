@@ -16,12 +16,11 @@
  */
 package com.root101.export.json;
 
+import com.root101.export.utils.ExportGlobalConfig;
 import com.root101.utils.file.Opener;
 import com.root101.json.jackson.JACKSON;
 import com.root101.utils.services.ConverterService;
 import java.io.File;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -41,10 +40,6 @@ public class JSONListWriter {
 
     public static builder builder() {
         return new builder();
-    }
-
-    public static File finalFile(File parent, String file, String extencion) {
-        return new File(parent, file + " " + DateTimeFormatter.ISO_LOCAL_DATE_TIME.format(LocalDateTime.now()) + "." + extencion);
     }
 
     public static class builder {
@@ -85,7 +80,7 @@ public class JSONListWriter {
 
         public Opener write() throws Exception {
             //crate Opener with actual date
-            Opener op = Opener.from(finalFile(folder, fileName, JSON));
+            Opener op = Opener.from(ExportGlobalConfig.finalFile(folder, fileName, JSON));
 
             //set up the final file to export
             finalFile = op.getFile();
