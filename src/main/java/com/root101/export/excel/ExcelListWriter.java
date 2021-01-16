@@ -25,10 +25,10 @@ import java.util.function.*;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import com.root101.utils.file.Opener;
+import com.root101.utils.interfaces.Formateable;
 import com.root101.utils.services.ConverterService;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
 import org.apache.poi.ss.util.CellRangeAddress;
@@ -120,9 +120,10 @@ public class ExcelListWriter {
         b.folder.mkdirs();
         try (FileOutputStream fileOut = new FileOutputStream(b.finalFile)) {
             workbook.write(fileOut);
+        } finally {
+            workbook.close();
         }
 
-        workbook.close();
     }
 
     /**
@@ -151,11 +152,12 @@ public class ExcelListWriter {
             cell.setCellValue((Double) value);
         } else if (value instanceof Boolean) {
             cell.setCellValue((Double) value);
+        } else if (value instanceof Formateable) {
+            cell.setCellValue(((Formateable) value).format());
         } else {
             cell.setCellValue(value.toString());
         }
     }
-
 
     public static builder builder() {
         return new builder();
