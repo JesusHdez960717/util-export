@@ -16,6 +16,7 @@
  */
 package com.root101.export.excel;
 
+import com.root101.export.utils.ExportGlobalConfig;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
@@ -155,9 +156,6 @@ public class ExcelListWriter {
         }
     }
 
-    public static File finalFile(File parent, String file, String extencion) {
-        return new File(parent, file + " " + DateTimeFormatter.ISO_LOCAL_DATE_TIME.format(LocalDateTime.now()) + "." + extencion);
-    }
 
     public static builder builder() {
         return new builder();
@@ -300,7 +298,7 @@ public class ExcelListWriter {
 
         public Opener write() throws Exception {
             //crate Opener with actual date
-            Opener op = Opener.from(finalFile(folder, fileName, XLSX));
+            Opener op = Opener.from(ExportGlobalConfig.finalFile(folder, fileName, XLSX));
 
             //set up the final file to export
             finalFile = op.getFile();
