@@ -28,6 +28,10 @@ public interface ExportableConfig<T> {
 
     public List<T> getValuesList();
 
+    public default List<T> getValuesListSelected() {
+        return getValuesList();
+    }
+
     public Object[] getRowObjectExport(T object);
 
     public String[] getColumnNamesExport();
