@@ -17,18 +17,13 @@
 package com.root101.export.utils;
 
 import com.root101.export.excel.ExcelListWriter;
-import com.root101.export.excel.ExportableConfigExcel;
-import com.root101.export.json.ExportableConfigJSON;
 import com.root101.export.json.JSONListWriter;
-import com.root101.utils.file.PersonalizationFiles;
-import java.io.File;
-import java.util.List;
 
 /**
  *
  * @author Root101 (jhernandezb96@gmail.com, +53-5-426-8660)
  */
-public abstract class SimpleExportableConfig<T> implements ExportableConfig<T>, ExportableConfigExcel<T>, ExportableConfigJSON<T> {
+public abstract class SimpleExportableConfig<T> implements ExportableFull<T> {
 
     //-----------------<EXCEL>-----------------
     @Override
