@@ -16,6 +16,7 @@
  */
 package com.root101.export.excel;
 
+import com.root101.export.utils.FormatterService;
 import com.root101.export.utils.ExportGlobalConfig;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -26,7 +27,6 @@ import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import com.root101.utils.file.Opener;
 import com.root101.utils.interfaces.Formateable;
-import com.root101.utils.services.ConverterService;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Calendar;
@@ -291,7 +291,7 @@ public class ExcelListWriter {
             this.folder(config.getFolder())
                     .fileName(config.getFileName())
                     .setColumns(config::getColumnNamesExport)
-                    .values(ConverterService.convert(config.getValuesList(), config::getRowObjectExport));
+                    .values(FormatterService.format(config.getValuesList(), config::getRowObjectExport));
 
             //personaliza con las cosas que quiera
             config.personalizeBuilder(this);

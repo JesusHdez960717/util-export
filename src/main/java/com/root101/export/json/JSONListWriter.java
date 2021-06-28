@@ -16,10 +16,10 @@
  */
 package com.root101.export.json;
 
+import com.root101.export.utils.FormatterService;
 import com.root101.export.utils.ExportGlobalConfig;
 import com.root101.utils.file.Opener;
 import com.root101.json.jackson.JACKSON;
-import com.root101.utils.services.ConverterService;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -74,7 +74,7 @@ public class JSONListWriter {
         public JSONListWriter.builder config(ExportableConfigJSON config) {
             this.folder(config.getFolder())
                     .fileName(config.getFileName())
-                    .values(ConverterService.convert(config.getColumnNamesExport(), config.getValuesList(), config::getRowObjectExport));
+                    .values(FormatterService.format(config.getColumnNamesExport(), config.getValuesList(), config::getRowObjectExport));
             return this;
         }
 
