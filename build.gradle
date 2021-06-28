@@ -11,23 +11,25 @@ repositories {
     mavenCentral()
 }
 
-
 dependencies {
-    testCompile 'junit:junit:4.13'
-    
     implementation project(':utils-core')
     implementation project(':clean-core')
     implementation project(':clean-swing')
     implementation project(':utils-files')
     
     //excel
-    compile group: 'org.apache.poi', name: 'poi', version: '4.1.2'
-    compile group: 'org.apache.poi', name: 'poi-ooxml', version: '4.1.2'
+    implementation 'org.apache.poi:poi:4.1.2'
+    implementation 'org.apache.poi:poi-ooxml:4.1.2'
 
     //pdf
-    //compile group: 'com.itextpdf', name: 'itextpdf', version: '5.5.13.2'
-    compile group: 'com.itextpdf', name: 'itext7-core', version: '7.1.12', ext: 'pom'
+    //implementation 'com.itextpdf:itextpdf:5.5.13.2'
+    implementation 'com.itextpdf:itext7-core:7.1.12'
 
     //html
-    compile group: 'org.freemarker', name: 'freemarker', version: '2.3.30'
+    implementation 'org.freemarker:freemarker:2.3.30'
+    
+    //Jackson
+    implementation 'com.fasterxml.jackson.core:jackson-core:2.10.2'
+    implementation 'com.fasterxml.jackson.core:jackson-annotations:2.10.2'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.10.2'
 }
