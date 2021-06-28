@@ -16,30 +16,13 @@
  */
 package com.root101.export.utils;
 
-import com.root101.export.excel.ExcelListWriter;
-import com.root101.export.json.JSONListWriter;
+import com.root101.export.excel.ExportableConfigExcel;
+import com.root101.export.json.ExportableConfigJSON;
 
 /**
  *
  * @author Root101 (jhernandezb96@gmail.com, +53-5-426-8660)
  */
-public abstract class SimpleExportableConfig<T> implements ExportableFull<T> {
+public interface ExportableFull<T> extends ExportableConfig<T>, ExportableConfigExcel<T>, ExportableConfigJSON<T> {
 
-    //-----------------<EXCEL>-----------------
-    @Override
-    public ExcelListWriter.builder exportExcelBuilder() {
-        return ExcelListWriter.builder().config(this);
-    }
-
-    @Override
-    public void personalizeBuilder(ExcelListWriter.builder bldr) {
-    }
-    //-----------------</EXCEL>-----------------
-
-    //-----------------<JSON>-----------------
-    @Override
-    public JSONListWriter.builder exportJSONBuilder() {
-        return new JSONListWriter.builder().config(this);
-    }
-    //-----------------</JSON>-----------------
 }

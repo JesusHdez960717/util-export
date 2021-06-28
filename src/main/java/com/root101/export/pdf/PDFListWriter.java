@@ -54,7 +54,7 @@ public class PDFListWriter {
             /*this.folder(config.getFolder())
                     .fileName(config.getFileName())
                     .setColumns(config::getColumnNamesExport)
-                    .values(ConverterService.convert(config.getValuesList(), config::getRowObjectExport));
+                    .values(ConverterHandler.convert(config.getValuesList(), config::getRowObjectExport));
 
             //personaliza con las cosas que quiera
             config.personalizeBuilder(this);*/
